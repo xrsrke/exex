@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "exex"
+  site-url: "https://xrsrke.github.io/exex"
+  description: "Experiment codebase for chemchem package"
+  repo-branch: main
+  repo-url: "https://github.com/xrsrke/exex"

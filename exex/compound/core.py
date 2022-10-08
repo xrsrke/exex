@@ -23,6 +23,9 @@ class Matter:
                 law = law(compound=self)
                 law._run_config()
                 self.laws[name] = law
+    
+    def _config(self):
+        pass
 
 # %% ../../nbs/01_compound.core.ipynb 7
 class MassMoleRatio(Law):

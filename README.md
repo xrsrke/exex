@@ -12,12 +12,63 @@ documentation.
 pip install exex
 ```
 
-## How to use
+## Pseudo code
 
-Fill me in please! Don’t forget code examples:
+Problems - If store value of a property inside the object - One property
+can belong to two different laws. So if that property change, which law
+need to be change?
+
+##### Example 11: What volume of $\mathrm{CO}_2$ is generated from $1.0 \mathrm{g}$ $\mathrm{C}_{6}\mathrm{H}_{12} \mathrm{O}_6$ reacting at $293 \mathrm{k}$ and $0.984 \mathrm{~atm}$ ?
+
+$\mathrm{C}_6 \mathrm{H}_{12} \mathrm{O}_6 (\mathrm{s}) \rightarrow 2 \mathrm{C}_2 \mathrm{H}_{6} \mathrm{O}(l)+2 \mathrm{CO}_2(\mathrm{~g})$
 
 ``` python
-1+1
+# from universe import our_universe
 ```
 
-    2
+``` python
+# system = System()
+```
+
+``` python
+# C6H12O6 = Compound('C6H12O6', 'solid')
+```
+
+``` python
+# C2H6O = Compound('C2H6O', 'liquid')
+```
+
+``` python
+# CO2 = Compound('CO2', 'gas')
+```
+
+``` python
+# open_container = OpenContainer()
+```
+
+``` python
+# r = Reaction(reactants=[C6H12O6], product=[C2H6O, CO2],
+#              catalyst=[],
+#              environment=open_container, system=system)
+```
+
+The current timestep is None
+
+``` python
+# final_state = system.set_time(-1)
+```
+
+After set mass, the system auto generated all properties of other
+component at that timestep
+
+``` python
+# final_state.compound(C6H12O6).setMass('1.0 g')
+```
+
+``` python
+# initial_state = system.set_time(1)
+```
+
+``` python
+# initial_state.compound(CO2).getVolume()
+```
