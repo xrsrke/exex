@@ -33,6 +33,10 @@ class MassMoleRatio(Law):
         super().__init__()
         self.compound = compound
         self.properties = [Mass, Mole]
+        self.x_properties = [
+            {"object": Mass},
+            {"object": Mole},
+        ]
 
 # %% ../../nbs/01_compound.core.ipynb 10
 class Compound(Matter):
@@ -42,13 +46,13 @@ class Compound(Matter):
     ) -> None:
         super().__init__()
         
-        self._config_laws([MassMoleRatio])
-        
         compound = chemlib.Compound(formula)
         self.elements = compound.elements
         self.formula = compound.formula
         self.coefficient = compound.coefficient
         self.occurences = compound.occurences
+        
+        self._config_laws([MassMoleRatio])
     
     def info(self):
         pass

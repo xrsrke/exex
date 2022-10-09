@@ -12,63 +12,69 @@ documentation.
 pip install exex
 ```
 
-## Pseudo code
-
-Problems - If store value of a property inside the object - One property
-can belong to two different laws. So if that property change, which law
-need to be change?
-
-##### Example 11: What volume of $\mathrm{CO}_2$ is generated from $1.0 \mathrm{g}$ $\mathrm{C}_{6}\mathrm{H}_{12} \mathrm{O}_6$ reacting at $293 \mathrm{k}$ and $0.984 \mathrm{~atm}$ ?
-
-$\mathrm{C}_6 \mathrm{H}_{12} \mathrm{O}_6 (\mathrm{s}) \rightarrow 2 \mathrm{C}_2 \mathrm{H}_{6} \mathrm{O}(l)+2 \mathrm{CO}_2(\mathrm{~g})$
-
 ``` python
-# from universe import our_universe
+H2 = Gas('H2')
 ```
 
 ``` python
-# system = System()
+CO2 = Gas('CO2')
 ```
 
 ``` python
-# C6H12O6 = Compound('C6H12O6', 'solid')
+CH4 = Gas('CH4')
 ```
 
 ``` python
-# C2H6O = Compound('C2H6O', 'liquid')
+O2 = Gas('O2')
 ```
 
 ``` python
-# CO2 = Compound('CO2', 'gas')
+CO = Gas('CO')
 ```
 
 ``` python
-# open_container = OpenContainer()
+r = Reaction(reactants=[H2, CO2], products=[CH4, O2, CO])
 ```
 
 ``` python
-# r = Reaction(reactants=[C6H12O6], product=[C2H6O, CO2],
-#              catalyst=[],
-#              environment=open_container, system=system)
+r.__dict__
 ```
 
-The current timestep is None
+    {'reaction': <chemlib.chemistry.Reaction>}
 
 ``` python
-# final_state = system.set_time(-1)
+r.reaction.__dict__
 ```
 
-After set mass, the system auto generated all properties of other
-component at that timestep
+    {'reactants': [<exex.compound.gas.Gas>,
+      <exex.compound.gas.Gas>],
+     'products': [<exex.compound.gas.Gas>,
+      <exex.compound.gas.Gas>,
+      <exex.compound.gas.Gas>],
+     'compounds': [<exex.compound.gas.Gas>,
+      <exex.compound.gas.Gas>,
+      <exex.compound.gas.Gas>,
+      <exex.compound.gas.Gas>,
+      <exex.compound.gas.Gas>],
+     'reactant_formulas': ['H₂', 'C₁O₂'],
+     'product_formulas': ['C₁H₄', 'O₂', 'C₁O₁'],
+     'formula': '1H₂ + 1C₁O₂ --> 1C₁H₄ + 1O₂ + 1C₁O₁',
+     'coefficients': {'H₂': 1, 'C₁O₂': 1, 'C₁H₄': 1, 'O₂': 1, 'C₁O₁': 1},
+     'constituents': ['H₂', 'C₁O₂', 'C₁H₄', 'O₂', 'C₁O₁'],
+     'reactant_occurences': {'H': 2, 'C': 1, 'O': 2},
+     'product_occurences': {'C': 2, 'H': 4, 'O': 3},
+     'is_balanced': False}
 
 ``` python
-# final_state.compound(C6H12O6).setMass('1.0 g')
+system = System()
 ```
 
 ``` python
-# initial_state = system.set_time(1)
+system.reactions['r'] = r
 ```
 
 ``` python
-# initial_state.compound(CO2).getVolume()
+system.reactions['r']
 ```
+
+    <exex.reaction.core.Reaction>

@@ -25,6 +25,10 @@ class BoyleLaw(Law):
         super().__init__()
         self.compound = compound
         self.properties = [Pressure, Volume]
+        self.x_properties = [
+            {"object": Pressure},
+            {"object": Volume}
+        ]
 
 # %% ../../nbs/01_compound.gas.ipynb 11
 class CharlesLaw(Law):
@@ -32,6 +36,10 @@ class CharlesLaw(Law):
         super().__init__()
         self.compound = compound
         self.properties = [Volume, Temperature]
+        self.x_properties = [
+            {"object": Volume},
+            {"object": Temperature}
+        ]
 
 # %% ../../nbs/01_compound.gas.ipynb 12
 class AvogadroLaw(Law):
@@ -39,13 +47,24 @@ class AvogadroLaw(Law):
         super().__init__()
         self.compound = compound
         self.properties = [Volume, Mole]
+        self.x_properties = [
+            {"object": Volume},
+            {"object": Mole}
+        ]
 
-# %% ../../nbs/01_compound.gas.ipynb 14
+# %% ../../nbs/01_compound.gas.ipynb 15
 class IdealGasLaw(Law):
     def __init__(self, compound: Compound) -> None:
-        super().__init__()
+        #super().__init__()
         self.compound = compound
         self.properties = [Pressure, Volume, Mole, Temperature, IsIdealGas]
+        self.x_properties = [
+            {"object": Pressure, "unit": "atm"},
+            {"object": Volume},
+            {"object": Mole},
+            {"object": Temperature},
+            {"object": IsIdealGas}
+        ]
     
     @property
     def expression(self):
@@ -57,10 +76,10 @@ class IdealGasLaw(Law):
     def solve(self, time, unknown):
         pass
 
-# %% ../../nbs/01_compound.gas.ipynb 18
+# %% ../../nbs/01_compound.gas.ipynb 19
 from abc import ABC, abstractmethod
 
-# %% ../../nbs/01_compound.gas.ipynb 19
+# %% ../../nbs/01_compound.gas.ipynb 20
 class State(ABC):
     def __init__(self, context):
         self.context = context
@@ -69,7 +88,7 @@ class State(ABC):
     def __bool__(self, timestep):
         pass
 
-# %% ../../nbs/01_compound.gas.ipynb 21
+# %% ../../nbs/01_compound.gas.ipynb 23
 class Gas(Compound):
     def __init__(self, formula):
         super().__init__(formula)

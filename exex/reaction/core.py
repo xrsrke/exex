@@ -4,23 +4,28 @@
 __all__ = ['Reaction']
 
 # %% ../../nbs/02_reaction.core.ipynb 4
-import pandas as pd
-from fastcore.test import test_eq
 import chemlib
 import pint
+import pandas as pd
+from fastcore.test import test_eq
+from fastcore.basics import GetAttr
 
 from ..compound.gas import Gas
 from ..compound.core import *
 
 # %% ../../nbs/02_reaction.core.ipynb 5
-class Reaction:
+class Reaction(GetAttr):
+    _default = 'reaction'
     def __init__(
         self,
         reactants: list[Compound], # the list of reactants
         products: list[Compound] # the list of products
     ) -> None:
-        self.reactants = reactants
-        self.products = products
+        
+        self.reaction = chemlib.Reaction(reactants=reactants, products=products)
+        
+        #self.reactants = self.reaction.reactants
+        #self.products = self.reaction.products
     
     def total_property(
         self,
