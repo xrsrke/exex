@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['Reaction']
 
-# %% ../../nbs/02_reaction.core.ipynb 3
+# %% ../../nbs/02_reaction.core.ipynb 4
 import pandas as pd
 from fastcore.test import test_eq
 import chemlib
@@ -12,14 +12,13 @@ import pint
 from ..compound.gas import Gas
 from ..compound.core import *
 
-# %% ../../nbs/02_reaction.core.ipynb 4
+# %% ../../nbs/02_reaction.core.ipynb 5
 class Reaction:
     def __init__(
         self,
         reactants: list[Compound], # the list of reactants
         products: list[Compound] # the list of products
     ) -> None:
-        #self.chem = chemlib.Reaction(reactants=reactants, products=products)
         self.reactants = reactants
         self.products = products
     

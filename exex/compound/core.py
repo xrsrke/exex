@@ -3,14 +3,14 @@
 # %% auto 0
 __all__ = ['Matter', 'MassMoleRatio', 'Compound']
 
-# %% ../../nbs/01_compound.core.ipynb 3
+# %% ../../nbs/01_compound.core.ipynb 4
 import chemlib
 from fastcore.test import test_eq
 
 from ..core import *
 from ..utils import *
 
-# %% ../../nbs/01_compound.core.ipynb 4
+# %% ../../nbs/01_compound.core.ipynb 5
 class Matter:
     def __init__(self):
         self.properties = dict()
@@ -27,14 +27,14 @@ class Matter:
     def _config(self):
         pass
 
-# %% ../../nbs/01_compound.core.ipynb 7
+# %% ../../nbs/01_compound.core.ipynb 8
 class MassMoleRatio(Law):
     def __init__(self, compound):
         super().__init__()
         self.compound = compound
         self.properties = [Mass, Mole]
 
-# %% ../../nbs/01_compound.core.ipynb 9
+# %% ../../nbs/01_compound.core.ipynb 10
 class Compound(Matter):
     def __init__(
         self,

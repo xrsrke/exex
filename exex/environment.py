@@ -10,7 +10,8 @@ class Environment:
 
 # %% ../nbs/03_environment.core.ipynb 6
 class Container(Environment):
-    pass
+    def __init__(self):
+        self.properties = []
 
 # %% ../nbs/03_environment.core.ipynb 7
 class OpenContainer(Container):
