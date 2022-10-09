@@ -55,17 +55,18 @@ class Compound(Matter):
         
         self._config_laws([MassMoleRatio])
     
-    def info(self):
+    def info(self, **kwargs):
         dta = {}
         
         for k, v in self.properties.items():
             # data_point = {}
             # print(v._data)
             key = k
-            if v.unit:
-                key += f' ({v.unit})'
+            # if v.unit:
+            #     key += f' ({v.unit})'
         
             dta[key] = v._data
         
-        df = pd.DataFrame(data=dta)
-        return df
+        df = pd.DataFrame(data=dta, **kwargs)
+        df.index.name = "Time"
+        return df.sort_index()
