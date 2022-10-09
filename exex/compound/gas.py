@@ -14,6 +14,7 @@ from .core import *
 class IsIdealGas(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'is_ideal_gas'
+        self.unit = None
         super().__init__(compound)
     
     def __bool__(self):

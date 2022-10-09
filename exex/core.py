@@ -33,6 +33,7 @@ class Unit:
     MOLE = 'mole'
     SPECIFIC_HEAT = 'joule / (kilogram kelvin)'
     PRESSURE = 'pascal'
+    VOLUME = 'liter'
 
 # %% ../nbs/00_core.ipynb 9
 class Object:
@@ -68,30 +69,35 @@ class PropertyObservable:
 class Mass(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'm'
+        self.unit = Unit.MASS
         super().__init__(compound)
 
 # %% ../nbs/00_core.ipynb 20
 class Mole(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'n'
+        self.unit = Unit.MOLE
         super().__init__(compound)
 
 # %% ../nbs/00_core.ipynb 21
 class Pressure(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'P'
+        self.unit = Unit.PRESSURE
         super().__init__(compound)
 
 # %% ../nbs/00_core.ipynb 22
 class Volume(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'V'
+        self.unit = Unit.VOLUME
         super().__init__(compound)
 
 # %% ../nbs/00_core.ipynb 23
 class Temperature(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'T'
+        self.unit = Unit.TEMPERATURE
         super().__init__(compound)
 
 # %% ../nbs/00_core.ipynb 25

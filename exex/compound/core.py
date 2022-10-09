@@ -5,6 +5,7 @@ __all__ = ['Matter', 'MassMoleRatio', 'Compound']
 
 # %% ../../nbs/01_compound.core.ipynb 4
 import chemlib
+import pandas as pd
 from fastcore.test import test_eq
 
 from ..core import *
@@ -55,4 +56,16 @@ class Compound(Matter):
         self._config_laws([MassMoleRatio])
     
     def info(self):
-        pass
+        dta = {}
+        
+        for k, v in self.properties.items():
+            # data_point = {}
+            # print(v._data)
+            key = k
+            if v.unit:
+                key += f' ({v.unit})'
+        
+            dta[key] = v._data
+        
+        df = pd.DataFrame(data=dta)
+        return df
