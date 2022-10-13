@@ -8,10 +8,11 @@ import chemlib
 import pint
 import pandas as pd
 from fastcore.test import test_eq
-from fastcore.basics import GetAttr
+from fastcore.basics import GetAttr, basic_repr
 
-from ..compound.gas import Gas
+from ..system import System
 from ..compound.core import *
+from ..environment import Environment, OpenContainer
 
 # %% ../../nbs/02_reaction.core.ipynb 5
 class Reaction(GetAttr):
@@ -19,13 +20,17 @@ class Reaction(GetAttr):
     def __init__(
         self,
         reactants: list[Compound], # the list of reactants
-        products: list[Compound] # the list of products
+        products: list[Compound] = [], # the list of products
+        environment: Environment = OpenContainer() # the environment
     ) -> None:
         
         self.reaction = chemlib.Reaction(reactants=reactants, products=products)
         
-        #self.reactants = self.reaction.reactants
-        #self.products = self.reaction.products
+        self.reactants = self.reaction.reactants
+        self.products = self.reaction.products
+        self.formula = self.reaction.formula
+        self.system: System = System(reactions=[self])
+        self.environment: Environment = environment
     
     def total_property(
         self,
@@ -41,3 +46,5 @@ class Reaction(GetAttr):
         total_product = 0
     
         return total_reactant, total_product
+    
+    __repr__ = basic_repr('formula')

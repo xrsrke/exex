@@ -4,8 +4,68 @@
 __all__ = ['System']
 
 # %% ../nbs/00_system.ipynb 4
+from .core import *
+
+# %% ../nbs/00_system.ipynb 5
 class System:
-    def __init__(self):
-        self._current_timestep = 0
-        self.reactions = []
+    def __init__(self, reactions = []):
         self.universe = None
+        self.current_time: int = None
+        self.highest_time: int = None
+        self.reactions: list = reactions
+        self._subscribers = dict()
+        self.idx_reaction: int = None
+    
+    def add_reaction(
+        self,
+        reactions # the list of chemical reactions
+    ): # return the list of all reactions
+        #if not isinstance(reaction, Reaction):
+            
+        for r in reactions:
+            self.reactions.append(r)
+        
+        return self.reactions
+
+    def reaction(
+        self,
+        idx: int # the index of the reaction
+    ): # the reaction
+        
+        if idx > len(self.reactions): return 'Sorry. idx too big'
+        
+        self.idx_reaction = idx
+        return self
+    
+    # def property(
+    #     self,
+    #     name # the name of the property that you want to access
+    # ):
+    #     return self
+    
+    def _config_reaction(self, reaction):
+        pass
+    
+    def compound(self, compound):
+        pass
+    
+    def set_data(
+        self,
+        name: str, # property name
+        data: list
+    ):
+        return self
+    
+    def get_data(
+        self,
+        name: str, # property name
+        times: list[int]
+    ):
+        return self
+    
+    def remove_data(
+        self,
+        name: str, # property name
+        times: list[int]
+    ):
+        return self
