@@ -4,15 +4,11 @@
 __all__ = ['Reaction']
 
 # %% ../../nbs/02_reaction.core.ipynb 4
-import chemlib
-import pint
-import pandas as pd
-from fastcore.test import test_eq
-from fastcore.basics import GetAttr, basic_repr
-
-from ..system import System
+from ..imports import *
 from ..compound.core import *
+from ..system import System
 from ..environment import Environment, OpenContainer
+from ..utils import camel_to_snake
 
 # %% ../../nbs/02_reaction.core.ipynb 5
 class Reaction(GetAttr):
@@ -32,6 +28,10 @@ class Reaction(GetAttr):
         self.system: System = System(reactions=[self])
         self.environment: Environment = environment
     
+    # @property
+    # def compounds(self): # the list of all reactants and products
+    #     return self.reaction.compounds
+    
     def total_property(
         self,
         name: str # the name of the property
@@ -48,3 +48,12 @@ class Reaction(GetAttr):
         return total_reactant, total_product
     
     __repr__ = basic_repr('formula')
+
+# %% ../../nbs/02_reaction.core.ipynb 6
+@patch(as_prop=True)
+def compounds(self: Reaction): # the list of all reactants and products
+    c = {}
+    for compound in [*self.reactants, *self.products]:
+        c[compound.snake_name] = compound
+    
+    return c

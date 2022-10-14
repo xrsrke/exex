@@ -13,15 +13,7 @@ pip install exex
 ```
 
 ``` python
-H2 = Gas('H2')
-```
-
-``` python
-CO2 = Gas('CO2')
-```
-
-``` python
-CH4 = Gas('CH4')
+C2 = Gas('C2')
 ```
 
 ``` python
@@ -29,52 +21,179 @@ O2 = Gas('O2')
 ```
 
 ``` python
-CO = Gas('CO')
+CO2 = Gas('CO2')
 ```
 
 ``` python
-r = Reaction(reactants=[H2, CO2], products=[CH4, O2, CO])
+r = Reaction(reactants=[Gas('C2'), Gas('O2')], products=[Gas('CO2')])
 ```
 
 ``` python
 r.__dict__
 ```
 
-    {'reaction': <chemlib.chemistry.Reaction>}
+    {'reaction': <chemlib.chemistry.Reaction>,
+     'reactants': [exex.gas.core.Gas(formula='C₂'),
+      exex.gas.core.Gas(formula='O₂')],
+     'products': [exex.gas.core.Gas(formula='C₁O₂')],
+     'formula': '1C₂ + 1O₂ --> 1C₁O₂',
+     'system': <exex.system.System>,
+     'environment': <exex.environment.OpenContainer>}
+
+``` python
+CO2.get_system()
+```
+
+    <exex.system.System>
+
+``` python
+r.system.__dict__
+```
+
+    {'universe': None,
+     'current_time': None,
+     'highest_time': None,
+     'reactions': [exex.reaction.core.Reaction(formula='1C₂ + 1O₂ --> 1C₁O₂')],
+     '_subscribers': {},
+     'idx_reaction': None}
+
+``` python
+r
+```
+
+    exex.reaction.core.Reaction(formula='1C₂ + 1O₂ --> 1C₁O₂')
+
+``` python
+CO2.properties
+```
+
+    {'mass': <exex.core.Mass>,
+     'mole': <exex.core.Mole>,
+     'pressure': <exex.core.Pressure>,
+     'volume': <exex.core.Volume>,
+     'temperature': <exex.core.Temperature>,
+     'ideal_gas_constant': <exex.gas.core.IdealGasConstant>,
+     'is_ideal_gas': <exex.gas.core.IsIdealGas>}
+
+``` python
+CO2.laws['mass_mole_ratio'].__dict__
+```
+
+    {'compound': exex.gas.core.Gas(formula='C₁O₂'),
+     'properties': [{'object': exex.core.Mass}, {'object': exex.core.Mole}]}
+
+``` python
+from exex.utils import camel_to_snake
+```
+
+``` python
+camel2snake(CO2.__class__.__name__)
+```
+
+    'gas'
+
+``` python
+C2.snake_name
+```
+
+    'C2'
+
+``` python
+reactants = [C2, O2]
+```
+
+``` python
+dic = {}
+```
+
+``` python
+C2.formula
+```
+
+    'C₂'
+
+``` python
+for reactant in reactants:
+    dic[reactant.snake_name] = reactant
+```
+
+``` python
+dic
+```
+
+    {'C2': exex.gas.core.Gas(formula='C₂'), 'O2': exex.gas.core.Gas(formula='O₂')}
+
+``` python
+C2
+```
+
+    exex.gas.core.Gas(formula='C₂')
+
+``` python
+C2.__dict__
+```
+
+    {'properties': {'mass': <exex.core.Mass>,
+      'mole': <exex.core.Mole>,
+      'pressure': <exex.core.Pressure>,
+      'volume': <exex.core.Volume>,
+      'temperature': <exex.core.Temperature>,
+      'ideal_gas_constant': <exex.gas.core.IdealGasConstant>,
+      'is_ideal_gas': <exex.gas.core.IsIdealGas>},
+     'laws': {'mass_mole_ratio': <exex.compound.core.MassMoleRatio>,
+      'boyle_law': <exex.gas.core.BoyleLaw>,
+      'charles_law': <exex.gas.core.CharlesLaw>,
+      'avogadro_law': <exex.gas.core.AvogadroLaw>,
+      'ideal_gas_law': <exex.gas.core.IdealGasLaw>},
+     'time': None,
+     'system': <exex.system.System>,
+     'elements': [<chemlib.chemistry.Element>,
+      <chemlib.chemistry.Element>],
+     'formula': 'C₂',
+     'coefficient': 1,
+     'occurences': {'C': 2}}
+
+``` python
+C2.formula
+```
+
+    'C₂'
 
 ``` python
 r.reaction.__dict__
 ```
 
-    {'reactants': [<exex.compound.gas.Gas>,
-      <exex.compound.gas.Gas>],
-     'products': [<exex.compound.gas.Gas>,
-      <exex.compound.gas.Gas>,
-      <exex.compound.gas.Gas>],
-     'compounds': [<exex.compound.gas.Gas>,
-      <exex.compound.gas.Gas>,
-      <exex.compound.gas.Gas>,
-      <exex.compound.gas.Gas>,
-      <exex.compound.gas.Gas>],
-     'reactant_formulas': ['H₂', 'C₁O₂'],
-     'product_formulas': ['C₁H₄', 'O₂', 'C₁O₁'],
-     'formula': '1H₂ + 1C₁O₂ --> 1C₁H₄ + 1O₂ + 1C₁O₁',
-     'coefficients': {'H₂': 1, 'C₁O₂': 1, 'C₁H₄': 1, 'O₂': 1, 'C₁O₁': 1},
-     'constituents': ['H₂', 'C₁O₂', 'C₁H₄', 'O₂', 'C₁O₁'],
-     'reactant_occurences': {'H': 2, 'C': 1, 'O': 2},
-     'product_occurences': {'C': 2, 'H': 4, 'O': 3},
+    {'reactants': [exex.gas.core.Gas(formula='C₂'),
+      exex.gas.core.Gas(formula='O₂')],
+     'products': [exex.gas.core.Gas(formula='C₁O₂')],
+     'compounds': [exex.gas.core.Gas(formula='C₂'),
+      exex.gas.core.Gas(formula='O₂'),
+      exex.gas.core.Gas(formula='C₁O₂')],
+     'reactant_formulas': ['C₂', 'O₂'],
+     'product_formulas': ['C₁O₂'],
+     'formula': '1C₂ + 1O₂ --> 1C₁O₂',
+     'coefficients': {'C₂': 1, 'O₂': 1, 'C₁O₂': 1},
+     'constituents': ['C₂', 'O₂', 'C₁O₂'],
+     'reactant_occurences': {'C': 2, 'O': 2},
+     'product_occurences': {'C': 1, 'O': 2},
      'is_balanced': False}
 
 ``` python
-system = System()
+from chemlib import Reaction, Compound
 ```
 
 ``` python
-system.reactions['r'] = r
+Reaction(reactants=[Compound('CO2')], products=[]).__dict__
 ```
 
-``` python
-system.reactions['r']
-```
-
-    <exex.reaction.core.Reaction>
+    {'reactants': [<chemlib.chemistry.Compound>],
+     'products': [],
+     'compounds': [<chemlib.chemistry.Compound>],
+     'reactant_formulas': ['C₁O₂'],
+     'product_formulas': [],
+     'formula': '1C₁O₂ --> ',
+     'coefficients': {'C₁O₂': 1},
+     'constituents': ['C₁O₂'],
+     'reactant_occurences': {'C': 1, 'O': 2},
+     'product_occurences': {},
+     'is_balanced': False}

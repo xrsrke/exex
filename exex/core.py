@@ -66,6 +66,11 @@ class PropertyObservable:
     def name(self) -> str:
         return camel_to_snake(self.__class__.__name__)
     
+    @classmethod
+    @property
+    def snake_name(cls) -> str: # return the snake style name
+        return camel_to_snake(cls.__name__)
+    
     def add_data(self, time, value):
         self._data[time] = {'value': value}
     
@@ -122,6 +127,11 @@ class Law:
     def name(self) -> str:
         return camel_to_snake(self.__class__.__name__)
     
+    @classmethod
+    @property
+    def snake_name(cls) -> str: # return the snake style name
+        return camel_to_snake(cls.__name__)
+    
     def n_known_variables(
         self,
         timestep: int
@@ -148,7 +158,8 @@ class Law:
     def _config_properties(self) -> None: # add law's properties to compound
         
         for p in self.properties:
-            name = camel_to_snake(p['object'].__name__)
+            # name = camel_to_snake(p['object'].__name__)
+            name = p['object'].snake_name
             
             if not name in self.compound.properties:
                 self.compound.properties[name] = p['object'](compound=self.compound)

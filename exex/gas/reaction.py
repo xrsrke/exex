@@ -3,6 +3,9 @@
 # %% auto 0
 __all__ = ['GasReaction']
 
-# %% ../../nbs/07_gas.reaction.ipynb 2
+# %% ../../nbs/07_gas.reaction.ipynb 4
+from ..basics import *
+
+# %% ../../nbs/07_gas.reaction.ipynb 5
 class GasReaction:
     pass

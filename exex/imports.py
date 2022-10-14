@@ -3,7 +3,8 @@
 
 import sympy as smp
 import pint
+import chemlib
 
 from fastcore.all import *
 from fastcore.basics import *
-from fastcore.test import test_eq
+from fastcore.test import *

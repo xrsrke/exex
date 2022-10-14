@@ -6,11 +6,7 @@ __all__ = ['State', 'Matter', 'MassMoleRatio', 'Compound']
 # %% ../../nbs/01_compound.core.ipynb 4
 from dataclasses import dataclass
 
-import chemlib
-import pandas as pd
-from fastcore.test import test_eq
-from fastcore.basics import basic_repr
-
+from ..imports import *
 from ..core import *
 from ..utils import *
 
@@ -22,12 +18,37 @@ class State:
     GAS = 'gas'
 
 # %% ../../nbs/01_compound.core.ipynb 8
-class Matter:
+class Matter(metaclass=PrePostInitMeta):
     def __init__(self):
         self.properties = dict()
         self.laws = dict()
         self.time: int = None
         self.system = None
+    
+    def __post_init__(self, *args, **kwargs): 
+        self._config()
+
+    def _config_laws(self, laws: list[Law]) -> None: # add laws from `self.add_laws` to compound
+        
+        for law in laws:
+            name = law.snake_name
+            
+            if not name in self.laws:
+                law = law(compound=self)
+                law._run_config()
+                self.laws[name] = law
+    
+    def _config(self) -> None:
+        self._config_laws(self.add_laws)
+    
+    def _set_system(
+        self,
+        system: System # the system
+    ) -> None:
+        self.system = system
+    
+    def get_system(self):
+        return self.system
     
     def set_time(
         self,
@@ -35,17 +56,6 @@ class Matter:
     ):
         self.time = time
         return self
-    
-    def _config_laws(self, laws: list[Law]) -> None:
-        for law in laws:
-            name = camel_to_snake(law.__name__)
-            if not name in self.laws:
-                law = law(compound=self)
-                law._run_config()
-                self.laws[name] = law
-    
-    def _config(self):
-        pass
 
 # %% ../../nbs/01_compound.core.ipynb 11
 class MassMoleRatio(Law):
@@ -60,6 +70,9 @@ class MassMoleRatio(Law):
 
 # %% ../../nbs/01_compound.core.ipynb 13
 class Compound(Matter):
+    
+    LAWS = [MassMoleRatio]
+    
     def __init__(
         self,
         formula: str # the chemical formula
@@ -67,12 +80,20 @@ class Compound(Matter):
         super().__init__()
         
         compound = chemlib.Compound(formula)
+        #self._laws = [MassMoleRatio]
+        self.add_laws = [MassMoleRatio]
+        
         self.elements = compound.elements
         self.formula = compound.formula
+        self._formula = formula
         self.coefficient = compound.coefficient
         self.occurences = compound.occurences
         
         self._config_laws([MassMoleRatio])
+    
+    @property
+    def snake_name(self) -> str: # return the snake name style
+        return self._formula
     
     def info(self, **kwargs):
         dta = {}

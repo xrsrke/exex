@@ -3,12 +3,8 @@
 # %% auto 0
 __all__ = ['IdealGasConstant', 'IsIdealGas', 'BoyleLaw', 'CharlesLaw', 'AvogadroLaw', 'IdealGasLaw', 'State', 'Gas']
 
-# %% ../../nbs/07_gas.core.ipynb 2
-import sympy as smp
-from fastcore.test import *
-
-from ..core import *
-from ..compound.core import *
+# %% ../../nbs/07_gas.core.ipynb 4
+from ..basics import *
 
 # %% ../../nbs/07_gas.core.ipynb 6
 class IdealGasConstant(PropertyObservable):
@@ -95,7 +91,13 @@ class State(ABC):
 
 # %% ../../nbs/07_gas.core.ipynb 24
 class Gas(Compound):
-    def __init__(self, formula):
+    def __init__(
+        self,
+        formula: str # the chemical formula
+    ) -> None:
         super().__init__(formula)
         
-        self._config_laws([BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw])
+        #self._laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw]
+        #self._config_laws()
+
+        self.add_laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw]
