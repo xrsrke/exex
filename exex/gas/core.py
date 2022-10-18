@@ -43,6 +43,10 @@ class CharlesLaw(Law):
             {"object": Volume},
             {"object": Temperature}
         ]
+    
+    @property
+    def e(self):
+        pass
 
 # %% ../../nbs/07_gas.core.ipynb 13
 class AvogadroLaw(Law):
@@ -71,7 +75,7 @@ class IdealGasLaw(Law):
         ]
     
     @property
-    def expression(self):
+    def e(self):
         p = self.compound.properties
         left_side = p['pressure'].symbol * p['volume'].symbol
         right_side = p['mole'].symbol * p['ideal_gas_constant'].symbol * p['temperature'].symbol

@@ -11,6 +11,7 @@ from ..environment import Environment, OpenContainer
 from ..utils import camel_to_snake
 
 # %% ../../nbs/02_reaction.core.ipynb 5
+@docs
 class Reaction(GetAttr):
     _default = 'reaction'
     def __init__(
@@ -22,9 +23,10 @@ class Reaction(GetAttr):
         
         self.reaction = chemlib.Reaction(reactants=reactants, products=products)
         
-        self.reactants = self.reaction.reactants
-        self.products = self.reaction.products
-        self.formula = self.reaction.formula
+        #self.reactants = self.reaction.reactants
+        #self.products = self.reaction.products
+        #self.formula = self.reaction.formula
+        #self.coefficients = self.reaction.coefficients
         self.system: System = System(reactions=[self])
         self.environment: Environment = environment
     
@@ -32,10 +34,13 @@ class Reaction(GetAttr):
     # def compounds(self): # the list of all reactants and products
     #     return self.reaction.compounds
     
+    # def update_chemlib(self)->None:
+    #     pass
+    
     def total_property(
         self,
         name: str # the name of the property
-    ) -> list[float, float]: # the total property of reactants and products
+    ) -> list[float, float]:
         
         total_reactant = 0
         for reactant in self.reactants:
@@ -47,7 +52,13 @@ class Reaction(GetAttr):
     
         return total_reactant, total_product
     
-    __repr__ = basic_repr('formula')
+    def balance(self) -> None:
+        self.reaction.balance()
+    
+    __repr__ = basic_repr('formula, is_balanced')
+    _docs = dict(cls_doc='Chemical Reaction',
+                 balance='Balance chemical reaction',
+                 total_property='Calculate the total properties of reactants and products')
 
 # %% ../../nbs/02_reaction.core.ipynb 6
 @patch(as_prop=True)
@@ -57,3 +68,13 @@ def compounds(self: Reaction): # the list of all reactants and products
         c[compound.snake_name] = compound
     
     return c
+
+# %% ../../nbs/02_reaction.core.ipynb 7
+@patch
+def initial_condition(self: Reaction, data):
+    pass
+
+# %% ../../nbs/02_reaction.core.ipynb 8
+@patch
+def final_conditon(self: Reaction, data):
+    pass

@@ -4,8 +4,7 @@
 __all__ = ['System']
 
 # %% ../nbs/00_system.ipynb 4
-from fastcore.meta import PrePostInitMeta
-
+from .imports import *
 from .core import *
 
 # %% ../nbs/00_system.ipynb 5

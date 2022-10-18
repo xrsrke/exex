@@ -39,15 +39,15 @@ class Unit:
 ureg = pint.UnitRegistry(system='SI')
 Q = ureg.Quantity # quantity
 
-# %% ../nbs/00_core.ipynb 17
+# %% ../nbs/00_core.ipynb 30
 class Object:
     pass
 
-# %% ../nbs/00_core.ipynb 18
+# %% ../nbs/00_core.ipynb 31
 class PropertyData(dict):
     pass
 
-# %% ../nbs/00_core.ipynb 23
+# %% ../nbs/00_core.ipynb 36
 class PropertyObservable:
     def __init__(self, compound):
         self._data = PropertyData()
@@ -86,43 +86,49 @@ class PropertyObservable:
         if not law in self.laws:
             self.laws[camel_to_snake(law.__class__.__name__)] = law
 
-# %% ../nbs/00_core.ipynb 24
+# %% ../nbs/00_core.ipynb 37
 class Mass(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'm'
         self.unit = Unit.MASS
         super().__init__(compound)
 
-# %% ../nbs/00_core.ipynb 25
+# %% ../nbs/00_core.ipynb 38
+@patch
+def set_mass(self: Mass):
+    pass
+
+# %% ../nbs/00_core.ipynb 39
 class Mole(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'n'
         self.unit = Unit.MOLE
         super().__init__(compound)
 
-# %% ../nbs/00_core.ipynb 26
+# %% ../nbs/00_core.ipynb 40
 class Pressure(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'P'
         self.unit = Unit.PRESSURE
         super().__init__(compound)
 
-# %% ../nbs/00_core.ipynb 27
+# %% ../nbs/00_core.ipynb 41
 class Volume(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'V'
         self.unit = Unit.VOLUME
         super().__init__(compound)
 
-# %% ../nbs/00_core.ipynb 28
+# %% ../nbs/00_core.ipynb 42
 class Temperature(PropertyObservable):
     def __init__(self, compound):
         self.abbreviate = 'T'
         self.unit = Unit.TEMPERATURE
         super().__init__(compound)
 
-# %% ../nbs/00_core.ipynb 30
+# %% ../nbs/00_core.ipynb 44
 class Law:
+    
     @property
     def name(self) -> str:
         return camel_to_snake(self.__class__.__name__)
@@ -174,7 +180,7 @@ class Law:
         unknown_symbol = self.compound.properties[unknown].symbol
         return smp.solve(self.expression, unknown_symbol)
 
-# %% ../nbs/00_core.ipynb 34
+# %% ../nbs/00_core.ipynb 48
 class System:
     def __init__(self):
         self.reactions = dict()
