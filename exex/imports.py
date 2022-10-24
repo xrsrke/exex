@@ -4,6 +4,7 @@
 import sympy as smp
 import pint
 import chemlib
+from IPython.core.debugger import set_trace
 
 from fastcore.all import *
 from fastcore.basics import *

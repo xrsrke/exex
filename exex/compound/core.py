@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from ..imports import *
 from ..core import *
+from ..system import *
 from ..utils import *
 
 # %% ../../nbs/01_compound.core.ipynb 6
@@ -23,12 +24,12 @@ class Matter(metaclass=PrePostInitMeta):
         self.properties = dict()
         self.laws = dict()
         self.time: int = None
-        self.system = None
+        self.system = System()
     
     def __post_init__(self, *args, **kwargs): 
-        self._config()
+        self._setup()
 
-    def _config_laws(self, laws: list[Law]) -> None: # add laws from `self.add_laws` to compound
+    def _setup_laws(self, laws: list[Law]) -> None: # add laws from `self.add_laws` to compound
         
         for law in laws:
             name = law.snake_name
@@ -38,8 +39,8 @@ class Matter(metaclass=PrePostInitMeta):
                 law._run_config()
                 self.laws[name] = law
     
-    def _config(self) -> None:
-        self._config_laws(self.add_laws)
+    def _setup(self) -> None:
+        self._setup_laws(self.add_laws)
     
     def _set_system(
         self,
@@ -58,17 +59,38 @@ class Matter(metaclass=PrePostInitMeta):
         return self
 
 # %% ../../nbs/01_compound.core.ipynb 11
+@patch
+@use_kwargs_dict(unit=None)
+def get_prop(
+    self: Matter,
+    name: str, # name
+    t: int, # time
+    **kwargs
+):
+    #if self.property_exists(args['name'])
+    return self.system.get_prop(name, t, instance=self, **kwargs)
+
+# %% ../../nbs/01_compound.core.ipynb 12
+@patch
+@use_kwargs_dict(unit=None, eval=False)
+def set_prop(self: Matter, name, val, t, **kwargs):
+    return self.system.set_prop(name, val, t, instance=self, **kwargs)
+
+# %% ../../nbs/01_compound.core.ipynb 14
 class MassMoleRatio(Law):
     def __init__(self, compound):
         super().__init__()
         self.compound = compound
-        #self.properties = [Mass, Mole]
+        #self.properties = [Mass, Mole, MolarMass]
         self.properties = [
             {"object": Mass},
             {"object": Mole},
         ]
+    
+    def expr(self):
+        return self.compound.get_properties('mass')
 
-# %% ../../nbs/01_compound.core.ipynb 13
+# %% ../../nbs/01_compound.core.ipynb 16
 class Compound(Matter):
     
     LAWS = [MassMoleRatio]
@@ -89,7 +111,7 @@ class Compound(Matter):
         self.coefficient = compound.coefficient
         self.occurences = compound.occurences
         
-        self._config_laws([MassMoleRatio])
+        self._setup_laws([MassMoleRatio])
     
     @property
     def snake_name(self) -> str: # return the snake name style

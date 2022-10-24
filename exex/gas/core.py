@@ -32,6 +32,8 @@ class BoyleLaw(Law):
             {"object": Pressure},
             {"object": Volume}
         ]
+    
+    def expr(self): pass
 
 # %% ../../nbs/07_gas.core.ipynb 12
 class CharlesLaw(Law):
@@ -44,9 +46,7 @@ class CharlesLaw(Law):
             {"object": Temperature}
         ]
     
-    @property
-    def e(self):
-        pass
+    def expr(self): pass
 
 # %% ../../nbs/07_gas.core.ipynb 13
 class AvogadroLaw(Law):
@@ -58,6 +58,8 @@ class AvogadroLaw(Law):
             {"object": Volume},
             {"object": Mole}
         ]
+    
+    def expr(self): pass
 
 # %% ../../nbs/07_gas.core.ipynb 16
 class IdealGasLaw(Law):
@@ -74,9 +76,10 @@ class IdealGasLaw(Law):
             {"object": IsIdealGas}
         ]
     
-    @property
-    def e(self):
+    def expr(self, *args, **kwargs):
+        
         p = self.compound.properties
+        
         left_side = p['pressure'].symbol * p['volume'].symbol
         right_side = p['mole'].symbol * p['ideal_gas_constant'].symbol * p['temperature'].symbol
         return smp.Eq(left_side, right_side)

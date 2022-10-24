@@ -8,8 +8,12 @@ from .imports import *
 from .core import *
 
 # %% ../nbs/00_system.ipynb 5
+@docs
 class System(metaclass=PrePostInitMeta):
-    def __init__(self, reactions = []):
+    def __init__(
+        self,
+        reactions = [] # list of reactions
+    ):
         self.universe = None
         self.current_time: int = None
         self.highest_time: int = None
@@ -18,22 +22,12 @@ class System(metaclass=PrePostInitMeta):
         self.idx_reaction: int = None
     
     def __post_init__(self, *args, **kwargs):
-        self._config_reaction()
+        self._setup_reaction()
     
-    def _config_reaction(self) -> None:
+    def _setup_reaction(self) -> None:
+        if len(self.reactions) < 1: return
         for name, compound in self.reactions[0].compounds.items():
             compound._set_system(self)
-    
-#     def add_reaction(
-#         self,
-#         reactions # the list of chemical reactions
-#     ): # return the list of all reactions
-#         #if not isinstance(reaction, Reaction):
-            
-#         for r in reactions:
-#             self.reactions.append(r)
-        
-#         return self.reactions
 
     def reaction(
         self,
@@ -45,26 +39,20 @@ class System(metaclass=PrePostInitMeta):
         self.idx_reaction = idx
         return self
     
-    def compound(self, compound):
-        pass
-    
-    def set_data(
-        self,
-        name: str, # property name
-        data: list
-    ):
-        return self
-    
-    def get_data(
-        self,
-        name: str, # property name
-        times: list[int]
-    ):
-        return self
-    
-    def remove_data(
-        self,
-        name: str, # property name
-        times: list[int]
-    ):
-        return self
+    _docs = dict(cls_doc='A container that acts as a mediator help compound, reaction and universe communicate to each other',
+                 reaction='',)
+
+# %% ../nbs/00_system.ipynb 6
+_msg = dict(
+    no_property = "Can't find the property"
+)
+
+# %% ../nbs/00_system.ipynb 8
+@patch
+def get_prop(self: System, name: str, t: int, instance, **kwargs):
+    return instance.properties[name](t, **kwargs)
+
+# %% ../nbs/00_system.ipynb 9
+@patch
+def set_prop(self: System, name, val, t, instance, **kwargs):        
+    return instance.properties[name].set_val(val, t, **kwargs)
