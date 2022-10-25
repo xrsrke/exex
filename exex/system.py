@@ -49,15 +49,22 @@ _msg = dict(
 
 # %% ../nbs/00_system.ipynb 8
 @patch
+def get_coeff(
+    self: System,
+    cmp):
+    return 
+
+# %% ../nbs/00_system.ipynb 9
+@patch
 def get_prop(self: System, name: str, t: int, instance, **kwargs):
     return instance.properties[name](t, **kwargs)
 
-# %% ../nbs/00_system.ipynb 9
+# %% ../nbs/00_system.ipynb 10
 @patch
 def set_prop(self: System, name, val, t, instance, **kwargs):        
     return instance.properties[name].set_val(val, t, **kwargs)
 
-# %% ../nbs/00_system.ipynb 10
+# %% ../nbs/00_system.ipynb 11
 @patch
 def get_law(self: System, name, t, instance, **kwargs):
     return instance.laws[name](t, **kwargs)

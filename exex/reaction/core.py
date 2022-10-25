@@ -8,7 +8,7 @@ from ..imports import *
 from ..compound.core import *
 from ..system import System
 from ..environment import Environment, OpenContainer
-from ..utils import camel_to_snake
+from ..utils import camel_to_snake, fml2str, str2fml
 
 # %% ../../nbs/02_reaction.core.ipynb 5
 @docs
@@ -62,6 +62,20 @@ class Reaction(GetAttr):
 
 # %% ../../nbs/02_reaction.core.ipynb 6
 @patch(as_prop=True)
+def coeffs(self: Reaction):
+    coeffs = {}
+    for k, v in self.reaction.coefficients.items():
+        coeffs[fml2str(k)] = v
+    
+    return coeffs
+
+# %% ../../nbs/02_reaction.core.ipynb 7
+@patch
+def get_coeff(self: Reaction, cmp: str):
+    return self.coeffs[cmp]
+
+# %% ../../nbs/02_reaction.core.ipynb 8
+@patch(as_prop=True)
 def compounds(self: Reaction): # the list of all reactants and products
     c = {}
     for compound in [*self.reactants, *self.products]:
@@ -69,12 +83,12 @@ def compounds(self: Reaction): # the list of all reactants and products
     
     return c
 
-# %% ../../nbs/02_reaction.core.ipynb 7
+# %% ../../nbs/02_reaction.core.ipynb 9
 @patch
 def initial_condition(self: Reaction, data):
     pass
 
-# %% ../../nbs/02_reaction.core.ipynb 8
+# %% ../../nbs/02_reaction.core.ipynb 10
 @patch
 def final_conditon(self: Reaction, data):
     pass
