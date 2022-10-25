@@ -56,3 +56,8 @@ def get_prop(self: System, name: str, t: int, instance, **kwargs):
 @patch
 def set_prop(self: System, name, val, t, instance, **kwargs):        
     return instance.properties[name].set_val(val, t, **kwargs)
+
+# %% ../nbs/00_system.ipynb 10
+@patch
+def get_law(self: System, name, t, instance, **kwargs):
+    return instance.laws[name](t, **kwargs)

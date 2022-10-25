@@ -2,6 +2,7 @@
 # that the package will generally use
 
 import sympy as smp
+import sympy.physics.units as u
 import pint
 import chemlib
 from IPython.core.debugger import set_trace

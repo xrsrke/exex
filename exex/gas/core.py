@@ -76,12 +76,14 @@ class IdealGasLaw(Law):
             {"object": IsIdealGas}
         ]
     
-    def expr(self, *args, **kwargs):
+    def expr(self, t, **kwargs):
         
-        p = self.compound.properties
+        cmp = self.compound
+        params = {'t': t}
         
-        left_side = p['pressure'].symbol * p['volume'].symbol
-        right_side = p['mole'].symbol * p['ideal_gas_constant'].symbol * p['temperature'].symbol
+        left_side = cmp.get_prop('pressure', *params) * cmp.get_prop('volume', *params)
+        right_side = cmp.get_prop('mole', *params) * cmp.get_prop('ideal_gas_constant', *params) * cmp.get_prop('temperature', *params)
+        
         return smp.Eq(left_side, right_side)
 
 # %% ../../nbs/07_gas.core.ipynb 20
@@ -107,4 +109,4 @@ class Gas(Compound):
         #self._laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw]
         #self._config_laws()
 
-        self.add_laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw]
+        self.add_laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw, MassMoleRatio]
