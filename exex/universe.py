@@ -22,17 +22,22 @@ class Universe(ABC):
 class OurUniverse(Universe):
     _docs = dict(cls_doc='The universe that has the law of physics from our universe (yeah you and me)')
 
-# %% ../nbs/00_universe.ipynb 9
+# %% ../nbs/00_universe.ipynb 10
 @docs
-class ConservationOfMass:
+class ConservationOfMass(Law):
+    def __init__(self):
+        pass
+    
+    def __bool__(self): pass
+
     _docs = dict(cls_doc='The sum of all masses in the universe')
 
-# %% ../nbs/00_universe.ipynb 10
+# %% ../nbs/00_universe.ipynb 11
 @docs
 class ConservationOfEnergy:
     _docs = dict(cls_doc='The sum of all energies in the universe')
 
-# %% ../nbs/00_universe.ipynb 11
+# %% ../nbs/00_universe.ipynb 12
 @docs
 class ConservationOfElectricCharge:
     _docs = dict(cls_doc='The sum of all electric charges in the universe')

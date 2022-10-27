@@ -76,7 +76,10 @@ class PropertyObservable:
     def snake_name(cls) -> str: # return the snake style name
         return camel_to_snake(cls.__name__)
     
-    def expr(self, t):
+    def expr(
+        self,
+        t: int # time
+    ):
         return self.symbol(t)
     
     def __call__(
@@ -101,12 +104,13 @@ class PropertyObservable:
     
     _docs = dict(cls_doc='Property',
                  add_law='',
-                 expr='')
+                 expr='Symbolic expression')
 
 # %% ../nbs/00_core.ipynb 43
 @patch
 def symbol(self: PropertyObservable, t): # symbolic expression of the property
-    return smp.symbols(f'{self.abbrv}_{t}', real=True,)
+    """Rewrite this method if you want to modify"""
+    return smp.symbols(f'{self.abbrv}_{t}', real=True)
 
 # %% ../nbs/00_core.ipynb 44
 @patch
