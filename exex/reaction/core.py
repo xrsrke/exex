@@ -30,13 +30,6 @@ class Reaction(GetAttr):
         self.system: System = System(reactions=[self])
         self.environment: Environment = environment
     
-    # @property
-    # def compounds(self): # the list of all reactants and products
-    #     return self.reaction.compounds
-    
-    # def update_chemlib(self)->None:
-    #     pass
-    
     def total_property(
         self,
         name: str # the name of the property

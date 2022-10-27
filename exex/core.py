@@ -17,54 +17,56 @@ class Event(list):
         for item in self:
             item(*args, **kwargs)
 
-# %% ../nbs/00_core.ipynb 7
-@dataclass
+# %% ../nbs/00_core.ipynb 9
 class Unit:
     """
-    Default Units
+    Default SI Units
     """
+    LENGTH = u.meter
+    MASS = u.kilogram
+    TIME = u.second
+    TEMPERATURE = u.kelvin
     
-    # SI Unit
-    LENGTH = 'meter'
-    MASS = 'kilogram'
-    TIME = 'second'
-    TEMPERATURE = 'kelvin'
-    
-    # Derived from SI Unit
-    MOLAR_MASS = 'grams / mole'
-    MOLE = 'mole'
-    SPECIFIC_HEAT = 'joule / (kilogram kelvin)'
-    PRESSURE = 'pascal'
-    VOLUME = 'liter'
+    """
+    Derived from SI Units
+    """
+    MOLAR_MASS = u.gram / u.mole
+    MOLE = u.mole
+    SPECIFIC_HEAT = u.joule / (u.kilogram * u.kelvin)
+    PRESSURE = u.pascal
+    VOLUME = u.liter
 
-# %% ../nbs/00_core.ipynb 8
+# %% ../nbs/00_core.ipynb 10
 def unit2expr(unit): pass
 
-# %% ../nbs/00_core.ipynb 12
+# %% ../nbs/00_core.ipynb 14
 ureg = pint.UnitRegistry(system='SI')
 Q = ureg.Quantity # quantity
 
-# %% ../nbs/00_core.ipynb 34
+# %% ../nbs/00_core.ipynb 36
 class Object:
     pass
 
-# %% ../nbs/00_core.ipynb 35
+# %% ../nbs/00_core.ipynb 37
 class PropertyData(dict):
     pass
 
-# %% ../nbs/00_core.ipynb 40
+# %% ../nbs/00_core.ipynb 42
 @docs
 class PropertyObservable:
-    def __init__(self, compound):
+    def __init__(
+        self,
+        cmp # chemical substance
+    ):
         self.is_constant: bool = False
+        self.compound = cmp
+        self.cmp = cmp
         self._data = PropertyData()
-        self.compound = compound
+        
         self._connections = []
         self.laws = dict()
         self.func_changed = Event()
-        
-        #self.symbol = smp.symbols(f'{self.abbreviate}', real=True)
-    
+            
     @property
     def name(self) -> str:
         return camel_to_snake(self.__class__.__name__)
@@ -101,17 +103,17 @@ class PropertyObservable:
                  add_law='',
                  expr='')
 
-# %% ../nbs/00_core.ipynb 41
+# %% ../nbs/00_core.ipynb 43
 @patch
 def symbol(self: PropertyObservable, t): # symbolic expression of the property
-    return smp.symbols(f'{self.abbreviate}_{t}', real=True,)
+    return smp.symbols(f'{self.abbrv}_{t}', real=True,)
 
-# %% ../nbs/00_core.ipynb 42
+# %% ../nbs/00_core.ipynb 44
 @patch
 def set_val(self: PropertyObservable, val: str, t: int):
     self._data[t] = {'val': val}
 
-# %% ../nbs/00_core.ipynb 43
+# %% ../nbs/00_core.ipynb 45
 @patch
 def get_val(
         self: PropertyObservable,
@@ -120,9 +122,9 @@ def get_val(
         if self.is_constant is True:
             return self.compute()
         else:
-            return self._data[t]['val'] if t in self._data else self.symbol(self.t)
+            return self._data[t]['val'] if t in self._data else self.symbol(t)
 
-# %% ../nbs/00_core.ipynb 44
+# %% ../nbs/00_core.ipynb 46
 @patch
 def eval(
     self: PropertyObservable,
@@ -132,19 +134,22 @@ def eval(
     return expr.xreplace({expr: self.get_val(t=t)}) 
 
 # %% ../nbs/00_core.ipynb 47
+@patch
+def is_empty(self: PropertyObservable, t):
+    return type(self.get_val(t))
+    #return True if isinstance(type(self.get_val(t)), sympy.core.symbol.Symbol) else False
+
+# %% ../nbs/00_core.ipynb 50
 class Mass(PropertyObservable):
     def __init__(self, compound):
-        self.abbreviate = 'm'
-        self.unit = Unit.MASS
         super().__init__(compound)
-    
-    def compute(self):
-        pass
+        self.abbrv = 'm'
+        self.unit = Unit.MASS
 
-# %% ../nbs/00_core.ipynb 48
+# %% ../nbs/00_core.ipynb 51
 class MolarMass(PropertyObservable):
     def __init__(self, compound):
-        self.abbreviate = 'M'
+        self.abbrv = 'M'
         self.unit = Unit.MOLAR_MASS
         super().__init__(compound)
         self.is_constant = True
@@ -154,38 +159,37 @@ class MolarMass(PropertyObservable):
         for element in self.compound.elements:
             mass += element.AtomicMass
         
-        #return Q(mass, Unit.MOLAR_MASS)
-        return mass * (u.gram / u.mole)
-
-# %% ../nbs/00_core.ipynb 49
-class Mole(PropertyObservable):
-    def __init__(self, compound):
-        self.abbreviate = 'n'
-        self.unit = Unit.MOLE
-        super().__init__(compound)
-
-# %% ../nbs/00_core.ipynb 50
-class Pressure(PropertyObservable):
-    def __init__(self, compound):
-        self.abbreviate = 'P'
-        self.unit = Unit.PRESSURE
-        super().__init__(compound)
-
-# %% ../nbs/00_core.ipynb 51
-class Volume(PropertyObservable):
-    def __init__(self, compound):
-        self.abbreviate = 'V'
-        self.unit = Unit.VOLUME
-        super().__init__(compound)
+        return mass * self.unit
 
 # %% ../nbs/00_core.ipynb 52
-class Temperature(PropertyObservable):
+class Mole(PropertyObservable):
     def __init__(self, compound):
-        self.abbreviate = 'T'
-        self.unit = Unit.TEMPERATURE
         super().__init__(compound)
+        self.abbrv = 'n'
+        self.unit = Unit.MOLE
+
+# %% ../nbs/00_core.ipynb 53
+class Pressure(PropertyObservable):
+    def __init__(self, compound):
+        super().__init__(compound)
+        self.abbrv = 'P'
+        self.unit = Unit.PRESSURE
 
 # %% ../nbs/00_core.ipynb 54
+class Volume(PropertyObservable):
+    def __init__(self, compound):
+        super().__init__(compound)
+        self.abbrv = 'V'
+        self.unit = Unit.VOLUME
+
+# %% ../nbs/00_core.ipynb 55
+class Temperature(PropertyObservable):
+    def __init__(self, compound):
+        super().__init__(compound)
+        self.abbrv = 'T'
+        self.unit = Unit.TEMPERATURE
+
+# %% ../nbs/00_core.ipynb 57
 class Law(ABC):
     
     @property

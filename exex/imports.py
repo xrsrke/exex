@@ -1,6 +1,7 @@
 # Imports from third party library
 # that the package will generally use
 
+import sympy
 import sympy as smp
 import sympy.physics.units as u
 import pint
