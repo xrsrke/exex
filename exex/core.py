@@ -252,3 +252,6 @@ class Law(ABC):
     
     @abstractmethod
     def expr(self): pass
+    
+    def __repr__(self):
+        return f"Law({self.name})"

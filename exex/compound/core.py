@@ -153,4 +153,5 @@ class Compound(Matter):
             return "The property don't exist"
         pass
 
-    __repr__ = basic_repr('formula')
+    def __repr__(self):
+        return f"Compound({self.formula})"

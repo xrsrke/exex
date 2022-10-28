@@ -63,7 +63,8 @@ class Reaction(GetAttr):
     def balance(self) -> None:
         self.reaction.balance()
     
-    __repr__ = basic_repr('formula, is_balanced')
+    def __repr__(self):
+        return f"Reaction({self.formula})"
     _docs = dict(cls_doc='Chemical Reaction',
                  balance='Balance chemical reaction',
                  total_property='Calculate the total properties of reactants and products')
