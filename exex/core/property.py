@@ -4,8 +4,7 @@
 __all__ = ['Object', 'PropertyData', 'BaseProperty', 'Property', 'ConstantProperty', 'PropertyObservable']
 
 # %% ../../nbs/00c_core.property.ipynb 4
-from dataclasses import dataclass
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from ..imports import *
 from .event import *
