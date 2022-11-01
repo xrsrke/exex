@@ -8,5 +8,5 @@ from .utils import *
 from .universe import *
 from .system import *
 from .environment import Environment, OpenContainer, ClosedContainer
-from .compound.core import *
+from .compound.all import *
 from .reaction.core import *
