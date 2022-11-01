@@ -13,19 +13,19 @@ pip install exex
 ```
 
 ``` python
-C2 = Gas('C2')
+C2 = Gas("C2")
 ```
 
 ``` python
-O2 = Gas('O2')
+O2 = Gas("O2")
 ```
 
 ``` python
-CO2 = Gas('CO2')
+CO2 = Gas("CO2")
 ```
 
 ``` python
-r = Reaction(reactants=[Gas('C2'), Gas('O2')], products=[Gas('CO2')])
+r = Reaction(reactants=[Gas("C2"), Gas("O2")], products=[Gas("CO2")])
 ```
 
 ``` python
@@ -76,7 +76,7 @@ CO2.properties
      'is_ideal_gas': <exex.gas.core.IsIdealGas>}
 
 ``` python
-CO2.laws['mass_mole_ratio'].__dict__
+CO2.laws["mass_mole_ratio"].__dict__
 ```
 
     {'compound': exex.gas.core.Gas(formula='C₁O₂'),
@@ -183,7 +183,7 @@ from chemlib import Reaction, Compound
 ```
 
 ``` python
-Reaction(reactants=[Compound('CO2')], products=[]).__dict__
+Reaction(reactants=[Compound("CO2")], products=[]).__dict__
 ```
 
     {'reactants': [<chemlib.chemistry.Compound>],

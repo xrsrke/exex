@@ -11,15 +11,15 @@ from ..basics import *
 class IdealGasConstant(PropertyObservable):
     def __init__(self, compound):
         super().__init__(compound)
-        self.abbrv = 'R'
+        self.abbrv = "R"
 
 # %% ../../nbs/07_gas.core.ipynb 7
 class IsIdealGas(PropertyObservable):
     def __init__(self, compound):
         super().__init__(compound)
-        self.abbrv = 'is_ideal_gas'
+        self.abbrv = "is_ideal_gas"
         self.unit = None
-    
+
     def __bool__(self):
         return False
 
@@ -39,63 +39,61 @@ class BoyleLaw(Law):
     def __init__(self, compound: Compound):
         super().__init__()
         self.compound = compound
-        #self.properties = [Pressure, Volume]
-        self.properties = [
-            {"object": Pressure},
-            {"object": Volume}
-        ]
-    
-    def expr(self): pass
+        # self.properties = [Pressure, Volume]
+        self.properties = [{"object": Pressure}, {"object": Volume}]
+
+    def expr(self):
+        pass
 
 # %% ../../nbs/07_gas.core.ipynb 16
 class CharlesLaw(Law):
     def __init__(self, compound: Compound) -> None:
         super().__init__()
         self.compound = compound
-        #self.properties = [Volume, Temperature]
-        self.properties = [
-            {"object": Volume},
-            {"object": Temperature}
-        ]
-    
-    def expr(self): pass
+        # self.properties = [Volume, Temperature]
+        self.properties = [{"object": Volume}, {"object": Temperature}]
+
+    def expr(self):
+        pass
 
 # %% ../../nbs/07_gas.core.ipynb 17
 class AvogadroLaw(Law):
     def __init__(self, compound: Compound) -> None:
         super().__init__()
         self.compound = compound
-        #self.properties = [Volume, Mole]
-        self.properties = [
-            {"object": Volume},
-            {"object": Mole}
-        ]
-    
-    def expr(self): pass
+        # self.properties = [Volume, Mole]
+        self.properties = [{"object": Volume}, {"object": Mole}]
+
+    def expr(self):
+        pass
 
 # %% ../../nbs/07_gas.core.ipynb 20
 class IdealGasLaw(Law):
     def __init__(self, compound: Compound) -> None:
-        #super().__init__()
+        # super().__init__()
         self.compound = compound
-        #self.properties = [Pressure, Volume, Mole, Temperature, IsIdealGas]
+        # self.properties = [Pressure, Volume, Mole, Temperature, IsIdealGas]
         self.properties = [
             {"object": Pressure, "unit": "atm"},
             {"object": Volume},
             {"object": Mole},
             {"object": Temperature},
             {"object": IdealGasConstant},
-            {"object": IsIdealGas}
+            {"object": IsIdealGas},
         ]
-    
+
     def expr(self, t, **kwargs):
-        
+
         cmp = self.compound
-        params = {'t': t}
-        
-        left_side = cmp.get_prop('pressure', *params) * cmp.get_prop('volume', *params)
-        right_side = cmp.get_prop('mole', *params) * cmp.get_prop('ideal_gas_constant', *params) * cmp.get_prop('temperature', *params)
-        
+        params = {"t": t}
+
+        left_side = cmp.get_prop("pressure", *params) * cmp.get_prop("volume", *params)
+        right_side = (
+            cmp.get_prop("mole", *params)
+            * cmp.get_prop("ideal_gas_constant", *params)
+            * cmp.get_prop("temperature", *params)
+        )
+
         return smp.Eq(left_side, right_side)
 
 # %% ../../nbs/07_gas.core.ipynb 24
@@ -105,20 +103,17 @@ from abc import ABC, abstractmethod
 class State(ABC):
     def __init__(self, context):
         self.context = context
-    
+
     @abstractmethod
     def __bool__(self, timestep):
         pass
 
 # %% ../../nbs/07_gas.core.ipynb 28
 class Gas(Compound):
-    def __init__(
-        self,
-        formula: str # the chemical formula
-    ) -> None:
+    def __init__(self, formula: str) -> None:  # the chemical formula
         super().__init__(formula)
-        
-        #self._laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw]
-        #self._config_laws()
+
+        # self._laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw]
+        # self._config_laws()
 
         self.add_laws = [BoyleLaw, CharlesLaw, AvogadroLaw, IdealGasLaw, MassMoleRatio]

@@ -10,16 +10,17 @@ from fastcore.test import test_eq
 
 # %% ../nbs/0_utils.ipynb 6
 def camel_to_snake(
-    name: str # the string that you want to convert
-    ) -> str: # converted string
-    name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
+    name: str,  # the string that you want to convert
+) -> str:  # converted string
+    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
 
 # %% ../nbs/0_utils.ipynb 11
-def snake_name(x) -> str: # return the snake name style
+def snake_name(x) -> str:  # return the snake name style
     "Get the snake style name of an instance"
-    
-    if type(x) == type: return camel_to_snake(x.__name__)
+
+    if type(x) == type:
+        return camel_to_snake(x.__name__)
     return camel_to_snake(x.__class__.__name__)
 
 # %% ../nbs/0_utils.ipynb 21

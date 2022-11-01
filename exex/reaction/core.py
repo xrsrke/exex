@@ -5,7 +5,7 @@ __all__ = ['get_properties', 'TotalProperty', 'Reaction']
 
 # %% ../../nbs/02_reaction.core.ipynb 4
 from ..imports import *
-from ..core import *
+from ..core.all import *
 from ..compound.core import *
 from ..system import System
 from ..environment import Environment, OpenContainer
@@ -13,8 +13,8 @@ from ..utils import camel_to_snake, fml2str, str2fml
 
 # %% ../../nbs/02_reaction.core.ipynb 8
 def get_properties(
-    l: list # a list of reactants or products
-): # return a of properties from l
+    l: list,  # a list of reactants or products
+):  # return a of properties from l
     pass
 
 # %% ../../nbs/02_reaction.core.ipynb 9
@@ -22,52 +22,58 @@ def get_properties(
 class TotalProperty(PropertyObservable):
     def __init__(self):
         super().__init__()
-    
-    _docs = dict(cls_doc='The total property of reactants, products in a chemical reaction')
+
+    _docs = dict(
+        cls_doc="The total property of reactants, products in a chemical reaction"
+    )
 
 # %% ../../nbs/02_reaction.core.ipynb 11
 @docs
 class Reaction(GetAttr):
-    _default = 'reaction'
+    _default = "reaction"
+
     def __init__(
         self,
-        reactants: list[Compound], # the list of reactants
-        products: list[Compound] = [], # the list of products
-        environment: Environment = OpenContainer() # the environment
+        reactants: list[Compound],  # the list of reactants
+        products: list[Compound] = [],  # the list of products
+        environment: Environment = OpenContainer(),  # the environment
     ) -> None:
-        
+
         self.reaction = chemlib.Reaction(reactants=reactants, products=products)
-        
+
         self._reactants = reactants
         self._products = products
-        #self.formula = self.reaction.formula
-        #self.coefficients = self.reaction.coefficients
+        # self.formula = self.reaction.formula
+        # self.coefficients = self.reaction.coefficients
         self.system: System = System(reactions=[self])
         self.environment: Environment = environment
-    
+
     def total_property(
-        self,
-        name: str # the name of the property
+        self, name: str  # the name of the property
     ) -> list[float, float]:
-        
+
         total_reactant = 0
         for reactant in self.reactants:
-            if not name in reactant.properties: pass
-            #total_reactant += reactant.properties[name]
+            if not name in reactant.properties:
+                pass
+            # total_reactant += reactant.properties[name]
             pass
-        
+
         total_product = 0
-    
+
         return total_reactant, total_product
-    
+
     def balance(self) -> None:
         self.reaction.balance()
-    
+
     def __repr__(self):
         return f"Reaction({self.formula})"
-    _docs = dict(cls_doc='Chemical Reaction',
-                 balance='Balance chemical reaction',
-                 total_property='Calculate the total properties of reactants and products')
+
+    _docs = dict(
+        cls_doc="Chemical Reaction",
+        balance="Balance chemical reaction",
+        total_property="Calculate the total properties of reactants and products",
+    )
 
 # %% ../../nbs/02_reaction.core.ipynb 12
 @patch(as_prop=True)
@@ -75,7 +81,7 @@ def coeffs(self: Reaction):
     coeffs = {}
     for k, v in self.reaction.coefficients.items():
         coeffs[fml2str(k)] = v
-    
+
     return coeffs
 
 # %% ../../nbs/02_reaction.core.ipynb 13
@@ -95,11 +101,11 @@ def products(self: Reaction):
 
 # %% ../../nbs/02_reaction.core.ipynb 16
 @patch(as_prop=True)
-def compounds(self: Reaction): # the list of all reactants and products
+def compounds(self: Reaction):  # the list of all reactants and products
     c = {}
     for compound in [*self.reactants, *self.products]:
         c[compound.snake_name] = compound
-    
+
     return c
 
 # %% ../../nbs/02_reaction.core.ipynb 17

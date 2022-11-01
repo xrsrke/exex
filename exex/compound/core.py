@@ -8,16 +8,16 @@ from dataclasses import dataclass
 import chemlib
 
 from ..imports import *
-from ..core import *
+from ..core.all import *
 from ..system import *
 from ..utils import *
 
 # %% ../../nbs/01_compound.core.ipynb 6
 @dataclass
 class State:
-    SOLID = 'solid'
-    LIQUID = 'liquid'
-    GAS = 'gas'
+    SOLID = "solid"
+    LIQUID = "liquid"
+    GAS = "gas"
 
 # %% ../../nbs/01_compound.core.ipynb 8
 class Matter(metaclass=PrePostInitMeta):
@@ -26,49 +26,40 @@ class Matter(metaclass=PrePostInitMeta):
         self.laws = dict()
         self.time: int = None
         self.system = System()
-    
-    def __post_init__(self, *args, **kwargs): 
+
+    def __post_init__(self, *args, **kwargs):
         self._setup()
 
-    def _setup_laws(self, laws: list[Law]) -> None: # add laws from `self.add_laws` to compound
-        
+    def _setup_laws(
+        self, laws: list[Law]
+    ) -> None:  # add laws from `self.add_laws` to compound
+
         for law in laws:
             name = law.snake_name
-            
+
             if not name in self.laws:
                 law = law(compound=self)
                 law._run_config()
                 self.laws[name] = law
-    
+
     def _setup(self) -> None:
         self._setup_laws(self.add_laws)
-    
-    def _set_system(
-        self,
-        system: System # the system
-    ) -> None:
+
+    def _set_system(self, system: System) -> None:  # the system
         self.system = system
-    
+
     def get_system(self):
         return self.system
-    
-    def set_time(
-        self,
-        time: int # time
-    ):
+
+    def set_time(self, time: int):  # time
         self.time = time
         return self
 
 # %% ../../nbs/01_compound.core.ipynb 11
 @patch
 @use_kwargs_dict(unit=None)
-def get_prop(
-    self: Matter,
-    name: str, # name
-    t: int, # time
-    **kwargs
-):
-    #if self.property_exists(args['name'])
+def get_prop(self: Matter, name: str, t: int, **kwargs):  # name  # time
+    # if self.property_exists(args['name'])
     return self.system.get_prop(name, t, instance=self, **kwargs)
 
 # %% ../../nbs/01_compound.core.ipynb 12
@@ -87,68 +78,57 @@ class MassMoleRatio(Law):
     def __init__(self, compound):
         super().__init__()
         self.compound = compound
-        #self.properties = [Mass, Mole, MolarMass]
-        self.properties = [
-            {"object": Mass},
-            {"object": Mole},
-            {"object": MolarMass}
-        ]
-    
+        # self.properties = [Mass, Mole, MolarMass]
+        self.properties = [{"object": Mass}, {"object": Mole}, {"object": MolarMass}]
+
     def expr(self, t, **kwargs):
         cmp = self.compound
-        params = {'t': t, **kwargs}
-        lhs = cmp.get_prop('molar_mass', **params) * cmp.get_prop('mole', **params)
-        rhs = cmp.get_prop('mass', **params)
+        params = {"t": t, **kwargs}
+        lhs = cmp.get_prop("molar_mass", **params) * cmp.get_prop("mole", **params)
+        rhs = cmp.get_prop("mass", **params)
         return smp.Eq(lhs, rhs)
 
 # %% ../../nbs/01_compound.core.ipynb 17
 class Compound(Matter):
-    
+
     LAWS = [MassMoleRatio]
-    
-    def __init__(
-        self,
-        formula: str # the chemical formula
-    ) -> None:
+
+    def __init__(self, formula: str) -> None:  # the chemical formula
         super().__init__()
-        
+
         compound = chemlib.Compound(formula)
-        #self._laws = [MassMoleRatio]
+        # self._laws = [MassMoleRatio]
         self.add_laws = [MassMoleRatio]
-        
+
         self.elements = compound.elements
         self.formula = compound.formula
         self._formula = formula
         self.coefficient = compound.coefficient
         self.occurences = compound.occurences
-        
+
         self._setup_laws([MassMoleRatio])
-    
+
     @property
-    def snake_name(self) -> str: # return the snake name style
+    def snake_name(self) -> str:  # return the snake name style
         return self._formula
-    
+
     def info(self, **kwargs):
         dta = {}
-        
+
         for k, v in self.properties.items():
             # data_point = {}
             # print(v._data)
             key = k
             # if v.unit:
             #     key += f' ({v.unit})'
-        
+
             dta[key] = v._data
-        
+
         df = pd.DataFrame(data=dta, **kwargs)
         df.index.name = "Time"
         return df.sort_index()
-    
-    def get_data(
-        self,
-        time: int, # the time
-        name: str # the property name
-    ):
+
+    def get_data(self, time: int, name: str):  # the time  # the property name
         if not name in self.properties:
             return "The property don't exist"
         pass

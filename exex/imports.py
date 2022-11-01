@@ -11,3 +11,4 @@ from IPython.core.debugger import set_trace
 from fastcore.all import *
 from fastcore.basics import *
 from fastcore.test import *
+from fastcore.foundation import docs
