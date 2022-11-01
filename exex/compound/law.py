@@ -6,7 +6,7 @@ __all__ = ['MassMoleRatio']
 # %% ../../nbs/01_compound.law.ipynb 4
 from ..imports import *
 from ..core.law import Law
-from .property import *
+from .property import Mass, Mole, MolarMass
 
 # %% ../../nbs/01_compound.law.ipynb 6
 class MassMoleRatio(Law):
