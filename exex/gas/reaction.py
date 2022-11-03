@@ -4,8 +4,7 @@
 __all__ = ['GasReaction']
 
 # %% ../../nbs/07_gas.reaction.ipynb 4
-from ..basics import *
+# from exex.basics import *
 
 # %% ../../nbs/07_gas.reaction.ipynb 5
-class GasReaction:
-    pass
+class GasReaction: pass

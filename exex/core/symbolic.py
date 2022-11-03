@@ -10,8 +10,8 @@ from ..imports import *
 @docs
 class Symbol(sympy.core.symbol.Symbol):
     def __new__(cls, name):
-        obj = sympy.core.symbol.Symbol.__new__(cls, name)
-        return obj
+        _obj = sympy.core.symbol.Symbol.__new__(cls, name)
+        return _obj
 
     def set_data(self, data):
         self._data = data
@@ -30,8 +30,8 @@ def is_evaled(self: Symbol): # Check whether the symbol is evaluated
 # %% ../../nbs/00b_core.symbolic.ipynb 20
 class Function(sympy.core.function.Function):
     def __new__(cls, name):
-        obj = sympy.core.function.Function.__new__(cls, name)
-        return obj
+        _obj = sympy.core.function.Function.__new__(cls, name)
+        return _obj
 
 # %% ../../nbs/00b_core.symbolic.ipynb 24
 class Equation:

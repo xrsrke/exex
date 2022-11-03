@@ -7,7 +7,7 @@ __all__ = ['State', 'Matter']
 from dataclasses import dataclass
 from ..imports import *
 from .law import Law
-from ..system import System
+from .system import System
 
 # %% ../../nbs/00_core.matter.ipynb 6
 @dataclass
@@ -19,10 +19,11 @@ class State:
 # %% ../../nbs/00_core.matter.ipynb 8
 class Matter(metaclass=PrePostInitMeta):
     def __init__(self):
-        self.properties = dict()
-        self.laws = dict()
-        self.time: int = None
-        self.system = System()
+        self._properties = dict()
+        self._laws = dict()
+        self._time: int = None
+        self._t: int = None
+        self._system = System()
 
     def __post_init__(self, *args, **kwargs):
         self._setup()
@@ -37,19 +38,33 @@ class Matter(metaclass=PrePostInitMeta):
             if not name in self.laws:
                 law = law(compound=self)
                 law._run_config()
-                self.laws[name] = law
+                self._laws[name] = law
 
     def _setup(self) -> None:
         self._setup_laws(self.add_laws)
 
     def _set_system(self, system: System) -> None:  # the system
-        self.system = system
+        self._system = system
 
     def get_system(self):
         return self.system
+    
+    @property
+    def system(self):
+        return self._system
 
-    def set_time(self, time: int):  # time
-        self.time = time
+    @property
+    def properties(self):
+        return self._properties
+    
+    @property
+    def laws(self):
+        return self._laws
+    
+    def set_time(self, t: int):  # time
+        self._time = t
+        self._t = t
+        
         return self
 
 # %% ../../nbs/00_core.matter.ipynb 11

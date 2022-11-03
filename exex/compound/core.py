@@ -9,7 +9,6 @@ import chemlib
 
 from ..imports import *
 from ..core.all import *
-from ..system import *
 from ..utils import *
 from .law import *
 

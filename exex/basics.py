@@ -3,10 +3,10 @@
 
 from .imports import *
 # from .core import *
+from .system import System
 from .core.all import *
 from .utils import *
 from .universe import *
-from .system import *
 from .environment import Environment, OpenContainer, ClosedContainer
 from .compound.all import *
 from .reaction.core import *

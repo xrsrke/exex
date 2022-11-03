@@ -7,7 +7,6 @@ __all__ = ['get_properties', 'TotalProperty', 'Reaction']
 from ..imports import *
 from ..core.all import *
 from ..compound.core import *
-from ..system import System
 from ..environment import Environment, OpenContainer
 from ..utils import camel_to_snake, fml2str, str2fml
 

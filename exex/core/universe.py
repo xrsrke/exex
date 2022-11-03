@@ -7,7 +7,8 @@ __all__ = ['Universe']
 from abc import ABC, abstractmethod
 
 from ..imports import *
-from .all import *
+from .law import Law
+from .system import System
 
 # %% ../../nbs/00_core.universe.ipynb 5
 @docs
