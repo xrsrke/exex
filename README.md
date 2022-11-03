@@ -10,33 +10,33 @@ pip install exex
 ```
 
 ``` python
-C2 = Gas("C2")
+# C2 = Gas("C2")
 ```
 
 ``` python
-O2 = Gas("O2")
+# O2 = Gas("O2")
 ```
 
 ``` python
-CO2 = Gas("CO2")
+# CO2 = Gas("CO2")
 ```
 
 ``` python
-r = Reaction(reactants=[C2, O2], products=[CO2])
+# r = Reaction(reactants=[C2, O2], products=[CO2])
 ```
 
 ``` python
-r.formula
+# r.formula
 ```
 
     '1C₂ + 1O₂ --> 1C₁O₂'
 
 ``` python
-r.balance()
+# r.balance()
 ```
 
 ``` python
-r.formula
+# r.formula
 ```
 
     '1C₂ + 2O₂ --> 2C₁O₂'
