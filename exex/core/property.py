@@ -24,26 +24,14 @@ class PropertyData(dict):
 class BaseProperty:
     def __init__(self, cmp):  # chemical substance
         self.is_constant: bool = False
-        self.compound = cmp
-        self.cmp = cmp
+        self._cmp = cmp
         self._data = PropertyData()
 
-        self._connections = []
-        self.laws = dict()
-        self.func_changed = Event()
-
-    @property
-    def name(self) -> str:
-        return camel_to_snake(self.__class__.__name__)
-
-    @classmethod
-    @property
-    def snake_name(cls) -> str:  # return the snake style name
-        return camel_to_snake(cls.__name__)
-
-    def expr(self, t: int):  # time
-        return self.symbol(t)
-
+        self._laws = dict()
+        
+        #self._connections = []
+        #self.func_changed = Event()
+    
     def __call__(self, t: int, eval: bool = False, **kwargs):  # time
         self.t = t
         self.kwargs = {**kwargs, "eval": eval}
@@ -55,11 +43,52 @@ class BaseProperty:
         else:
             return expr
 
+    @property
+    def name(self) -> str:
+        return camel_to_snake(self.__class__.__name__)
+
+    @classmethod
+    @property
+    def snake_name(cls) -> str:  # return the snake style name
+        return camel_to_snake(cls.__name__)
+    
+    @property
+    def compound(self):
+        return self.cmp
+    
+    @property
+    def cmp(self):
+        return self._cmp
+    
+    @cmp.setter
+    def cmp(self, cmp):
+        self._cmp = cmp
+    
+    @property
+    def data(self):
+        return self._data
+    
+    @property
+    def laws(self): # get a list of laws that asscoiated to this property
+        return self._laws
+    
+    @laws.setter
+    def laws(self, laws):
+        return self._laws
+    
+    def expr(self, t: int):  # time
+        return self.symbol(t)
+
     def add_law(self, law):
         if not law in self.laws:
             self.laws[camel_to_snake(law.__class__.__name__)] = law
+    
+    def remove_law(self, law): pass
 
-    _docs = dict(cls_doc="Property", add_law="", expr="Symbolic expression")
+    _docs = dict(cls_doc="Property",
+                 add_law="",
+                 remove_law="",
+                 expr="Symbolic expression")
 
 # %% ../../nbs/00c_core.property.ipynb 13
 @patch
@@ -91,12 +120,12 @@ def is_empty(self: BaseProperty, t):
     return type(self.get_val(t))
     # return True if isinstance(type(self.get_val(t)), sympy.core.symbol.Symbol) else False
 
-# %% ../../nbs/00c_core.property.ipynb 18
+# %% ../../nbs/00c_core.property.ipynb 20
 @docs
 class Property(BaseProperty):
     _docs = dict(cls_doc="Property that varies in time")
 
-# %% ../../nbs/00c_core.property.ipynb 20
+# %% ../../nbs/00c_core.property.ipynb 22
 @docs
 class ConstantProperty(BaseProperty):
     @abstractmethod
@@ -107,10 +136,10 @@ class ConstantProperty(BaseProperty):
         cls_doc="Property that invariant in time", compute="Calculate the value"
     )
 
-# %% ../../nbs/00c_core.property.ipynb 22
+# %% ../../nbs/00c_core.property.ipynb 24
 class Property(BaseProperty):
     pass
 
-# %% ../../nbs/00c_core.property.ipynb 23
+# %% ../../nbs/00c_core.property.ipynb 25
 class PropertyObservable(Property):
     pass

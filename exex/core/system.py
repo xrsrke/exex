@@ -15,7 +15,7 @@ class System(metaclass=PrePostInitMeta):
         self._highest_time: int = None
         self._reactions: list = reactions
         self._subscribers = dict()
-        self._idx_reaction: int = None
+        self._idx_rxn: int = None
 
     def __post_init__(self, *args, **kwargs):
         self._setup_reaction()
@@ -28,8 +28,11 @@ class System(metaclass=PrePostInitMeta):
     
     @property
     def universe(self):
-        pass
-        #return self._universe
+        return self._universe
+    
+    @universe.setter
+    def universe(self, unv):
+        self._universe = unv
     
     @property
     def reactions(self):
@@ -39,26 +42,37 @@ class System(metaclass=PrePostInitMeta):
     def rxns(self):
         return self._reactions
     
+    @rxns.setter
+    def rxns(self, rxns):
+        self._reactions = rxns
+    
     @property
     def num_rxns(self) -> int:
         return len(self.reactions)
-
-    def set_idx_rxn(
-        self, idx: int # the index of reaction in self.reactions
-    ):
-        self._idx_reaction = idx
+    
+    @property
+    def idx_rxn(self) -> int:
+        return self._idx_rxn
+    
+    @idx_rxn.setter
+    def idx_rxn(self, idx: int): # the index of the reaction  # the reaction
+        self._idx_rxn = idx
+    
+    # def set_idx_rxn(
+    #     self, idx: int # the index of reaction in self.reactions
+    # ):
+    #     self._idx_rxn = idx
 
     def reaction(self, idx: int):  # the index of the reaction  # the reaction
 
         if idx > self.num_rxns:
             return "Sorry. idx too big"
 
-        self.set_idx_rnx(idx)
+        self.idx_rxn = idx
         return self
 
     _docs = dict(
         cls_doc="A container that acts as a mediator help compound, reaction and universe communicate to each other",
-        set_idx_rxn="",
         reaction="",
     )
 

@@ -38,16 +38,20 @@ class Matter(metaclass=PrePostInitMeta):
             if not name in self.laws:
                 law = law(compound=self)
                 law._run_config()
-                self._laws[name] = law
+                self._add_law(name, law)
+    
+    def _add_law(
+        self,
+        name: str, # name of law
+        law: Law # law's class
+    ) -> None:
+        self._laws[name] = law
 
     def _setup(self) -> None:
         self._setup_laws(self.add_laws)
 
-    def _set_system(self, system: System) -> None:  # the system
+    def _set_system(self, system: System) -> None:  # set system
         self._system = system
-
-    def get_system(self):
-        return self.system
     
     @property
     def system(self):
@@ -60,27 +64,29 @@ class Matter(metaclass=PrePostInitMeta):
     @property
     def laws(self):
         return self._laws
-    
-    def set_time(self, t: int):  # time
-        self._time = t
-        self._t = t
-        
-        return self
 
-# %% ../../nbs/00_core.matter.ipynb 11
+# %% ../../nbs/00_core.matter.ipynb 10
+@patch
+def set_time(
+    self: Matter,
+    t: int # time
+): # set time
+    self._t = t
+
+# %% ../../nbs/00_core.matter.ipynb 14
 @patch
 @use_kwargs_dict(unit=None)
 def get_prop(self: Matter, name: str, t: int, **kwargs):  # name  # time
     # if self.property_exists(args['name'])
     return self.system.get_prop(name, t, instance=self, **kwargs)
 
-# %% ../../nbs/00_core.matter.ipynb 12
+# %% ../../nbs/00_core.matter.ipynb 15
 @patch
 @use_kwargs_dict(unit=None)
 def set_prop(self: Matter, name, val, t, **kwargs):
     return self.system.set_prop(name, val, t, instance=self, **kwargs)
 
-# %% ../../nbs/00_core.matter.ipynb 13
+# %% ../../nbs/00_core.matter.ipynb 16
 @patch
 def get_law(self: Matter, name, t, **kwargs):
     return self.system.get_law(name, t, instance=self, **kwargs)

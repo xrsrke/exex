@@ -9,7 +9,7 @@ from ..imports import *
 # %% ../../nbs/00b_core.symbolic.ipynb 6
 @docs
 class Symbol(sympy.core.symbol.Symbol):
-    def __new__(cls, name):
+    def __new__(cls, name: str):
         _obj = sympy.core.symbol.Symbol.__new__(cls, name)
         return _obj
 

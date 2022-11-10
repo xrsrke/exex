@@ -12,6 +12,7 @@ from ..utils import camel_to_snake
 
 # %% ../../nbs/00d_core.law.ipynb 6
 class BaseLaw(ABC):
+    
     @property
     def name(self) -> str:
         return camel_to_snake(self.__class__.__name__)

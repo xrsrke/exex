@@ -2,8 +2,8 @@ project:
   output-dir: _docs
 
 website:
-  title: "exex"
-  site-url: "https://xrsrke.github.io/exex"
+  title: "vipers"
+  site-url: "https://xrsrke.github.io/vipers"
   description: "Experiment codebase for chemchem package"
   repo-branch: main
-  repo-url: "https://github.com/xrsrke/exex"
+  repo-url: "https://github.com/xrsrke/vipers"
